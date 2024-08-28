@@ -13,7 +13,7 @@ const handleLogout = () => {
 
 <template>
   <main>
-    <p>User logged in, hi {{ store.state.username }}</p>
+    <p>User logged in, hi {{ store.state.email }}</p>
     <a-button type="primary" @click="handleLogout">Logout</a-button>
     <!-- Logout button to trigger logout action -->
   </main>

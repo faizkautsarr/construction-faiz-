@@ -2,13 +2,15 @@ import { createStore } from 'vuex'
 
 const store = createStore({
   state: {
-    username: '',
+    email: '',
     password: '',
-    isLoggedIn: false
+    isLoggedIn: false,
+    validLogiEmail: 'a@a.com',
+    validLoginPassword: '123'
   },
   mutations: {
-    setUsername(state, payload: string) {
-      state.username = payload
+    setEmail(state, payload: string) {
+      state.email = payload
     },
     setPassword(state, payload: string) {
       state.password = payload
@@ -18,20 +20,20 @@ const store = createStore({
     }
   },
   actions: {
-    login({ commit }, { username, password }: { username: string; password: string }) {
+    login({ commit }, { email, password }: { email: string; password: string }) {
       console.log('Logging in...')
-      commit('setUsername', username)
+      commit('setEmail', email)
       commit('setPassword', password)
       commit('setLoggedIn', true)
     },
     logout({ commit }) {
-      commit('setUsername', '')
+      commit('setEmail', '')
       commit('setPassword', '')
       commit('setLoggedIn', false)
     }
   },
   getters: {
-    getUsername: (state) => state.username,
+    getEmail: (state) => state.email,
     getPassword: (state) => state.password,
     isLoggedIn: (state) => state.isLoggedIn
   }
