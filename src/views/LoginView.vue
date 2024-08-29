@@ -2,8 +2,9 @@
 import { ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { notification } from 'ant-design-vue'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
+
+import { openNotification } from '@/utils/notification'
 
 const email = ref('')
 const password = ref('')
@@ -11,26 +12,19 @@ const password = ref('')
 const store = useStore()
 const router = useRouter()
 
-type NotificationType = 'success' | 'error'
-
-const openNotificationWithIcon = (type: NotificationType, message: string, description: string) => {
-  notification[type]({
-    message: message,
-    description: description
-  })
-}
 const handleLogin = () => {
   if (!isInputValid.value) {
     return
   } else {
     if (
-      email.value === store.state.validLogiEmail &&
-      password.value === store.state.validLoginPassword
+      email.value === store.getters['auth/getValidLoginEmail'] &&
+      password.value === store.getters['auth/getValidLoginPassword']
     ) {
-      openNotificationWithIcon('success', 'Login Success', 'You have successfully logged in.')
-      store.dispatch('login', { email: email.value, password: password.value })
+      openNotification('success', 'Login Success', 'You have successfully logged in.')
+      store.dispatch('auth/login', { email: email.value, password: password.value })
+      router.push('/home')
     } else {
-      openNotificationWithIcon('error', 'Login Failed', 'Invalid email or password.')
+      openNotification('error', 'Login Failed', 'Invalid email or password.')
     }
   }
 }
@@ -41,7 +35,7 @@ const isInputValid = computed(() => {
 })
 
 watch(
-  () => store.state.isLoggedIn,
+  () => store.getters['getIsLoggedIn'],
   (isLoggedIn) => {
     if (isLoggedIn) {
       router.push('/home')
@@ -62,7 +56,11 @@ watch(
       ></template>
       <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
         <a-input v-model:value="email" placeholder="Email" />
-        <a-input-password v-model:value="password" placeholder="Password" />
+        <a-input-password
+          v-model:value="password"
+          placeholder="Password"
+          @keyup.enter="handleLogin"
+        />
 
         <a-button
           style="width: 100%"
