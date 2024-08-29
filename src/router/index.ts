@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useStore } from 'vuex'
-import LoginView from '../views/LoginView.vue'
+import LoginView from '@/views/pages/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,8 +12,8 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: () => import('../views/HomeView.vue'),
-      meta: { requiresAuth: true } // Mark this route as requiring authentication
+      component: () => import('@/views/pages/HomeView.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })

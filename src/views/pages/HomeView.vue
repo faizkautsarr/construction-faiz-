@@ -9,8 +9,6 @@ const store = useStore()
 const router = useRouter()
 
 onBeforeMount(() => {
-  console.log(store.state)
-
   if (!store.getters['auth/getIsLoggedIn']) {
     handleLogout()
   }
