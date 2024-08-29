@@ -46,7 +46,7 @@ watch(
 
 <template>
   <main>
-    <a-card title="Construction Site" style="width: 400px">
+    <a-card title="Construction Site" class="w-96">
       <template #extra
         ><a-tooltip placement="topLeft">
           <template #title>
@@ -54,7 +54,7 @@ watch(
           </template>
           <question-circle-filled /> </a-tooltip
       ></template>
-      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+      <div class="flex flex-col items-start gap-4">
         <a-input v-model:value="email" placeholder="Email" />
         <a-input-password
           v-model:value="password"
@@ -62,10 +62,7 @@ watch(
           @keyup.enter="handleLogin"
         />
 
-        <a-button
-          style="width: 100%"
-          :type="isInputValid ? 'primary' : 'disabled'"
-          @click="handleLogin"
+        <a-button class="w-full" :type="isInputValid ? 'primary' : 'disabled'" @click="handleLogin"
           >Login</a-button
         >
       </div>
