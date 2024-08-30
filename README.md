@@ -23,5 +23,5 @@ npm install
 ```sh
 npm run dev
 access on your browser http://localhost:7777/
-you can use email: a@a.com password: 123 to for login
+you can use email: a@a.com password: 123  for login
 ```
