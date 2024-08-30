@@ -33,15 +33,6 @@ const isInputValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email.value) && password.value.length > 2
 })
-
-watch(
-  () => store.getters['getIsLoggedIn'],
-  (isLoggedIn) => {
-    if (isLoggedIn) {
-      router.push('/home')
-    }
-  }
-)
 </script>
 
 <template>

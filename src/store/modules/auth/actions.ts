@@ -3,7 +3,6 @@ export const actions = {
     { commit }: { commit: (mutation: string, value: any) => void },
     { email, password }: { email: string; password: string }
   ) {
-    console.log('Logging in...')
     commit('setEmail', email)
     commit('setPassword', password)
     commit('setLoggedIn', true)
