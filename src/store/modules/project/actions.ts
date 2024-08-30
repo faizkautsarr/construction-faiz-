@@ -1,11 +1,21 @@
 import type { Project, ActionType } from './state'
 export const actions = {
-  removeProject({ commit }: { commit: (mutation: string, value: any) => void }, id: number) {
+  removeProject({ commit }: { commit: (mutation: string, value: number) => void }, id: number) {
     commit('removeProject', id)
   },
 
   editProject(
-    { commit }: { commit: (mutation: string, value: any) => void },
+    {
+      commit
+    }: {
+      commit: (
+        mutation: string,
+        value: {
+          id: number
+          project: Project
+        }
+      ) => void
+    },
     payload: {
       id: number
       project: Project
@@ -14,15 +24,24 @@ export const actions = {
     commit('editProject', payload)
   },
 
-  createProject({ commit }: { commit: (mutation: string, value: any) => void }, payload: Project) {
+  createProject(
+    { commit }: { commit: (mutation: string, value: Project) => void },
+    payload: Project
+  ) {
     commit('createProject', payload)
   },
 
-  setSelectedProject({ commit }: { commit: (mutation: string, value: any) => void }, id: number) {
+  setSelectedProject(
+    { commit }: { commit: (mutation: string, value: number) => void },
+    id: number
+  ) {
     commit('setSelectedProject', id)
   },
 
-  setActionType({ commit }: { commit: (mutation: string, value: any) => void }, type: ActionType) {
+  setActionType(
+    { commit }: { commit: (mutation: string, value: ActionType) => void },
+    type: ActionType
+  ) {
     commit('setActionType', type)
   },
 

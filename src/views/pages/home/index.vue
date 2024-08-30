@@ -30,7 +30,7 @@ const handleAddProject = () => {
 
 <template>
   <main
-    class="min-h-screen flex flex-col items-center justify-start w-full px-4 pt-16 bg-gradient-to-tr from-[#006bff] to-[#006bff]"
+    class="min-h-screen flex flex-col items-center justify-start w-full px-4 pt-16 bg-gradient-to-tr from-[#051937] via-[#02173b] to-[#00153e]"
   >
     <ProjectActionModal />
 

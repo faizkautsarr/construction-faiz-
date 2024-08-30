@@ -18,6 +18,26 @@ const description = ref('')
 
 const selectedProject = computed(() => store.getters['project/getSelectedProject'])
 
+const inputValid = computed(
+  () =>
+    name.value &&
+    location.value &&
+    stage.value &&
+    (!isOthers.value || otherCategory.value) &&
+    category.value &&
+    date.value &&
+    (!isFutureProject.value || date.value.isAfter(dayjs())) &&
+    description.value
+)
+
+const isFutureProject = computed(() => {
+  return ['Concept', 'Design & Documentation', 'Pre-Construction'].includes(stage.value)
+})
+
+const isViewOnly = computed(() => {
+  return store.getters['project/getActionType'] === 'view'
+})
+
 watch(selectedProject, () => {
   if (
     store.getters['project/getSelectedProject'] !== null &&
@@ -77,6 +97,12 @@ const isOthers = computed(() => {
   return category.value === 'Others'
 })
 
+const disabledDate = (current: Dayjs) => {
+  return isFutureProject.value
+    ? current && current < dayjs().endOf('day')
+    : current && current < dayjs('1800-01-01')
+}
+
 function resetForm() {
   name.value = ''
   location.value = ''
@@ -92,44 +118,52 @@ function handleCancel() {
   setTimeout(() => {
     resetForm()
     store.commit('project/resetActionType')
-  }, 500)
+  }, 200)
 }
 
 function submitAction() {
-  if (store.getters['project/getActionType'] === 'remove') {
-    store.dispatch('project/removeProject', store.getters['project/getSelectedProject'].id)
-    openNotification('success', 'Remove project success', '')
-  } else if (store.getters['project/getActionType'] === 'create') {
-    store.dispatch('project/createProject', {
-      id: generateId(),
-      creatorId: store.getters['auth/getEmail'],
-      name: name.value,
-      location: location.value,
-      stage: stage.value,
-      category: category.value,
-      othersCategory: otherCategory.value,
-      startDate: date.value,
-      description: description.value
-    })
-    openNotification('success', 'Create project success', '')
-  } else if (store.getters['project/getActionType'] === 'edit') {
-    store.dispatch('project/editProject', {
-      id: store.getters['project/getSelectedProject'].id,
-      project: {
-        id: store.getters['project/getSelectedProject'].id,
+  if (!inputValid.value) {
+    openNotification(
+      'error',
+      'Error',
+      'All fields are required. Please fill in all fields and make sure your input date is valid.'
+    )
+  } else {
+    if (store.getters['project/getActionType'] === 'remove') {
+      store.dispatch('project/removeProject', store.getters['project/getSelectedProject'].id)
+      openNotification('success', 'Remove project success', '')
+    } else if (store.getters['project/getActionType'] === 'create') {
+      store.dispatch('project/createProject', {
+        id: generateId(),
         creatorId: store.getters['auth/getEmail'],
         name: name.value,
         location: location.value,
         stage: stage.value,
         category: category.value,
-        othersCategory: otherCategory.value,
+        othersCategory: isOthers.value ? otherCategory.value : '',
         startDate: date.value,
         description: description.value
-      }
-    })
-    openNotification('success', 'Edit project success', '')
+      })
+      openNotification('success', 'Create project success', '')
+    } else if (store.getters['project/getActionType'] === 'edit') {
+      store.dispatch('project/editProject', {
+        id: store.getters['project/getSelectedProject'].id,
+        project: {
+          id: store.getters['project/getSelectedProject'].id,
+          creatorId: store.getters['auth/getEmail'],
+          name: name.value,
+          location: location.value,
+          stage: stage.value,
+          category: category.value,
+          othersCategory: otherCategory.value,
+          startDate: date.value,
+          description: description.value
+        }
+      })
+      openNotification('success', 'Edit project success', '')
+    }
+    handleCancel()
   }
-  handleCancel()
 }
 </script>
 
@@ -147,12 +181,24 @@ function submitAction() {
       <div class="flex flex-row items-center justify-between gap-2 w-full">
         <div class="w-full">
           <p class="m-0">Name</p>
-          <a-textarea v-model:value="name" placeholder="Name" maxlength="200" :rows="3" />
+          <a-textarea
+            v-model:value="name"
+            placeholder="Name"
+            maxlength="200"
+            :rows="3"
+            :disabled="isViewOnly"
+          />
         </div>
 
         <div class="w-full">
           <p class="m-0">Location</p>
-          <a-textarea v-model:value="location" placeholder="Location" maxlength="500" rows="3" />
+          <a-textarea
+            v-model:value="location"
+            placeholder="Location"
+            maxlength="500"
+            rows="3"
+            :disabled="isViewOnly"
+          />
         </div>
       </div>
 
@@ -164,6 +210,7 @@ function submitAction() {
             :options="stageOptions"
             placeholder="Stage"
             class="w-full"
+            :disabled="isViewOnly"
           />
         </div>
 
@@ -174,18 +221,28 @@ function submitAction() {
             :options="categoryOptions"
             placeholder="Category"
             class="w-full"
+            :disabled="isViewOnly"
           />
         </div>
       </div>
 
       <div v-if="isOthers" class="w-full">
         <p>Other Category</p>
-        <a-input v-model:value="otherCategory" placeholder="Other Category" />
+        <a-input
+          v-model:value="otherCategory"
+          placeholder="Other Category"
+          :disabled="isViewOnly"
+        />
       </div>
 
       <div class="w-full">
         <p>Start Date</p>
-        <a-date-picker class="w-full" v-model:value="date" />
+        <a-date-picker
+          class="w-full"
+          v-model:value="date"
+          :disabled="isViewOnly"
+          :disabled-date="disabledDate"
+        />
       </div>
 
       <div class="w-full">
@@ -195,6 +252,7 @@ function submitAction() {
           placeholder="Description"
           maxlength="2000"
           rows="4"
+          :disabled="isViewOnly"
         />
       </div>
     </div>

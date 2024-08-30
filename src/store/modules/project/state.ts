@@ -13,13 +13,13 @@ export interface Project {
 
 export type ActionType = 'view' | 'remove' | 'edit' | 'create' | null
 
-export interface ProjectsState {
+export interface ProjectState {
   projects: Project[]
   selectedProject: Project | null
   actionType: ActionType | null
 }
 
-export const state: ProjectsState = {
+export const state: ProjectState = {
   projects: [],
   selectedProject: null,
   actionType: null

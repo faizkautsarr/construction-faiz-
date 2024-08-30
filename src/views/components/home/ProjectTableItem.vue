@@ -1,44 +1,20 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { useStore } from 'vuex'
-import { Dayjs } from 'dayjs'
 import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
+import type { Project, ActionType } from '@/store/modules/project/state'
 
 const store = useStore()
 
 const props = defineProps<{
-  project: {
-    id: string
-    creatorId: string
-    name: string
-    location: string
-    stage: string
-    category: string
-    othersCategory: string
-    startDate: Dayjs
-    description: string
-  }
+  project: Project
 }>()
 
-const handleView = () => {
+const handleAction = (type: ActionType) => {
   store.dispatch('project/setSelectedProject', props.project.id)
   setTimeout(() => {
-    store.dispatch('project/setActionType', 'view')
-  }, 500)
-}
-
-const handleEdit = () => {
-  store.dispatch('project/setSelectedProject', props.project.id)
-  setTimeout(() => {
-    store.dispatch('project/setActionType', 'edit')
-  }, 500)
-}
-
-const handleDelete = () => {
-  store.dispatch('project/setSelectedProject', props.project.id)
-  setTimeout(() => {
-    store.dispatch('project/setActionType', 'remove')
-  }, 500)
+    store.dispatch('project/setActionType', type)
+  })
 }
 </script>
 
@@ -58,7 +34,7 @@ const handleDelete = () => {
       type="default"
       size="medium"
       class="flex items-center justify-center"
-      @click="handleView"
+      @click="handleAction('view')"
     >
       <template #icon>
         <EyeOutlined />
@@ -69,7 +45,7 @@ const handleDelete = () => {
       type="primary"
       size="medium"
       class="flex items-center justify-center"
-      @click="handleEdit"
+      @click="handleAction('edit')"
     >
       <template #icon>
         <EditOutlined />
@@ -81,7 +57,7 @@ const handleDelete = () => {
       size="medium"
       class="flex items-center justify-center"
       danger
-      @click="handleDelete"
+      @click="handleAction('remove')"
     >
       <template #icon>
         <DeleteOutlined />
