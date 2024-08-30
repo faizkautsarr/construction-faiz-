@@ -1,20 +1,18 @@
 # construction-faiz
 
-This template should help get you started developing with Vue 3 in Vite.
+Project Vue 3 with Vite
+Demo on:
 
-## Recommended IDE Setup
+## Demo
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Check out the live demo: [Construction Demo](https://construction-faiz.vercel.app/)
 
-## Type Support for `.vue` Imports in TS
+## Project Setup for local development
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+```sh
+clone repo
+cd to cloned repo
+```
 
 ```sh
 npm install
@@ -24,16 +22,6 @@ npm install
 
 ```sh
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+access on your browser http://localhost:7777/
+you can use email: a@a.com password: 123 to for login
 ```
