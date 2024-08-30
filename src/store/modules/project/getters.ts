@@ -1,9 +1,9 @@
-import type { ProjectsState } from './state'
+import type { ProjectState } from './state'
 
 export const getters = {
-  getProjects: (state: ProjectsState) => state.projects,
-  getSelectedProject: (state: ProjectsState) => state.selectedProject,
-  getProjectById: (state: ProjectsState) => (id: number) =>
+  getProjects: (state: ProjectState) => state.projects,
+  getSelectedProject: (state: ProjectState) => state.selectedProject,
+  getProjectById: (state: ProjectState) => (id: number) =>
     state.projects.find((project) => project.id === id),
-  getActionType: (state: ProjectsState) => state.actionType
+  getActionType: (state: ProjectState) => state.actionType
 }
